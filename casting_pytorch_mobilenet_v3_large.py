@@ -165,7 +165,7 @@ def train_model(model, epochs, loss_fn, optimizer):
                 model.eval()
             
             # 損失値のリセット
-            epoch_loss = 0.0
+            running_loss = 0.0
             # 正解数
             corrects = 0
             # 予測値リストのリセット
@@ -202,7 +202,7 @@ def train_model(model, epochs, loss_fn, optimizer):
                         optimizer.step()
                     
                     # 損失値の追加
-                    epoch_loss += loss.item() * images.size(0)
+                    running_loss += loss.item() * images.size(0)
                     
                     # 正解数の追加
                     corrects += torch.sum(preds == labels.data)                    
@@ -216,7 +216,7 @@ def train_model(model, epochs, loss_fn, optimizer):
                     true_list.extend(labels)
             
             # 1エポック内における損失値の平均
-            epoch_loss = epoch_loss / len(dataloader[phase].dataset)
+            epoch_loss = running_loss / len(dataloader[phase].dataset)
             
             # 正解率の算出
             accuracy = corrects.double() / len(dataloader[phase].dataset)
